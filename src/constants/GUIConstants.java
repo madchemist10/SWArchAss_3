@@ -5,4 +5,6 @@ package constants;
  * the gui interaction with the user.
  */
 public interface GUIConstants {
+
+    String ASK_FOR_USERNAME = "Enter username >> ";
 }
