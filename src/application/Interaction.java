@@ -28,10 +28,10 @@ public class Interaction {
     }
 
     public ArrayList<Item> getItemList(){
-        return null;
+        return itemDatabase.getAllItems();
     }
 
-    public ArrayList<User> getUserList(){
-        return null;
+    public User getUser(String username){
+        return userDatabase.getUser(username);
     }
 }
