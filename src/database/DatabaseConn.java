@@ -8,11 +8,11 @@ import java.util.ArrayList;
  * Database class responsible for database connection establishment.
  * http://www.tutorialspoint.com/sqlite/sqlite_java.htm
  */
-public class SQLiteJDBC {
+public class DatabaseConn {
     private Connection conn = null;
     private String database = null;
 
-    public SQLiteJDBC(String db){
+    public DatabaseConn(String db){
         this.database = db;
         this.conn = this.makeConnection(this.database);
     }
