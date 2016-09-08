@@ -42,4 +42,25 @@ public interface Item {
      * @return String representation of this item's description.
      */
     String getDescription();
+
+    /**
+     * Retrieve this item's type.
+     * @return String representation of this item's type.
+     */
+    String getItemType();
+
+    /**
+     * Set the id of this item.
+     * Should only be used when retrieving items from
+     * database and assigning the item id from the database.
+     * @param id id to assign to this item.
+     */
+    void setID(Integer id);
+
+    /**
+     * Formatted string for this item that equates to the
+     * format found in the database.
+     * @return String of this item's properties.
+     */
+    String[] getDatabaseEntryFormat();
 }
