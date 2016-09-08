@@ -1,6 +1,7 @@
 package gui;
 
 import application.Application;
+import constants.AppConstants;
 import constants.GUIConstants;
 import inventory.Item;
 
@@ -31,7 +32,7 @@ public class CommandLineApp {
             displayMainMenu();
             /*Get user choice*/
             String userInput = userInput();
-            if(userInput == null || userInput.equals("Exit")){
+            if(userInput == null || userInput.equalsIgnoreCase(GUIConstants.EXIT)){
                 return;
             }
             handleMainMenuDecision(userInput);
@@ -52,6 +53,7 @@ public class CommandLineApp {
     }
 
     private static void displayMainMenu(){
+        output("Welcome to your online shopping site.");
         output("0. Display All items.");
         output(String.format("1. Display %s's cart.",app.getUsername()));
         output("Exit.");
@@ -61,11 +63,11 @@ public class CommandLineApp {
         switch(index){
             /*Display all items in database.*/
             case "0":
-                displayItems(app.displayAvailableItems());
+                displayItems(app.displayAvailableItems(), true);
                 break;
             /*Display user's cart.*/
             case "1":
-                displayItems(app.getCurrentUser().getCart().getItems());
+                displayItems(app.getCurrentUser().getCart().getItems(), false);
                 break;
         }
     }
@@ -74,15 +76,56 @@ public class CommandLineApp {
      * Display all items available for a given category.
      * Must ask user for the category.
      * @param items list of items to display.
+     * @param askUser boolean flag to determine if the user should be asked
+     *                for the category to display.
      */
-    private static void displayItems(ArrayList<Item> items){
+    private static void displayItems(ArrayList<Item> items, boolean askUser){
+        String itemType = null;
         /*Ask user for type of item to search through.*/
-        output(GUIConstants.ASK_FOR_ITEM_TYPE);
-        String itemType = userInput();
+        if(askUser){
+            output(GUIConstants.ASK_FOR_ITEM_TYPE);
+            while(true) {
+                displayCategoryDecision();
+                /*Get user choice*/
+                String userInput = userInput();
+                if(userInput.equalsIgnoreCase(GUIConstants.BACK)){
+                    return; //go back to main menu.
+                }
+                itemType = handleCategoryDecision(userInput);
+                /*If the return value from handling is not the same as the user's input,
+                * then we have correctly handled the input. Continue to displaying the data.*/
+                if(!itemType.equals(userInput)){
+                    break;
+                }
+            }
+        }
         for(Item item: items){
-            if(item.getItemType().equals(itemType)) {
+            if(itemType != null && item.getItemType().equals(itemType)) {
                 output(item.displayItem());
             }
         }
+    }
+
+    private static void displayCategoryDecision(){
+        output("Choose your category:");
+        output("0. Books");
+        output("1. Children Toys");
+        output("2. Household Items");
+        output("3. Small Electronics");
+        output("Back.");
+    }
+
+    private static String handleCategoryDecision(String index){
+        switch(index){
+            case "0":
+                return AppConstants.BOOKS;
+            case "1":
+                return AppConstants.CHILDREN_TOYS;
+            case "2":
+                return AppConstants.HOUSEHOLD_ITEM;
+            case "3":
+                return AppConstants.SMALL_ELECTRONICS;
+        }
+        return index;
     }
 }

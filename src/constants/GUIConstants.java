@@ -9,4 +9,9 @@ public interface GUIConstants {
     String ASK_FOR_USERNAME = "Enter username >> ";
 
     String ASK_FOR_ITEM_TYPE = "Choose Item Type >> ";
+
+
+    /*Menu options.*/
+    String EXIT = "EXIT";
+    String BACK = "BACK";
 }
