@@ -14,6 +14,8 @@ public interface AppConstants {
     String ITEM_TABLE = "ITEM";
     /** Name used for the user table.*/
     String USER_TABLE = "USER";
+    /** Name used for the user's previous purchase table.*/
+    String USER_PURCHASE_TABLE = "USER_PURCHASE";
 
     /*Item table headers.*/
     String ID = "ID";

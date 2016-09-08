@@ -27,13 +27,12 @@ public class CommandLineApp {
         /*Display the user options for either search
         * for an item to add to cart, or to view
         * the current cart.*/
-        boolean execution = true;
-        while(execution) {
+        while(true) {
             displayMainMenu();
             /*Get user choice*/
             String userInput = userInput();
             if(userInput == null || userInput.equals("Exit")){
-                execution = false;
+                return;
             }
             handleMainMenuDecision(userInput);
         }
@@ -67,8 +66,6 @@ public class CommandLineApp {
             /*Display user's cart.*/
             case "1":
                 displayItems(app.getCurrentUser().getCart().getItems());
-                break;
-            case "Exit":
                 break;
         }
     }

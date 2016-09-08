@@ -35,6 +35,11 @@ public class ItemDatabase {
         this.itemDBConn.insertIntoTable(statement);
     }
 
+    /**
+     * Retrieve a specific item from the database.
+     * @param id id of the specific item to retrieve.
+     * @return Item object of the retrieved item.
+     */
     public Item getItem(Integer id){
         String ID = id.toString();
         String where = AppConstants.ID + " = '" + ID + "'";
@@ -47,6 +52,38 @@ public class ItemDatabase {
                 return null;
         }
         String[] itemEntry = returnVal.get(0);
+        return createItemFromArray(itemEntry);
+    }
+
+    /**
+     * Retrieve all items from the database.
+     * @return list of all items from the database.
+     */
+    public ArrayList<Item> getAllItems(){
+        /*Select * from Item*/
+        String statement = DBStatementBuilder.selectStatement("*") +
+                DBStatementBuilder.fromStatement(AppConstants.ITEM_TABLE);
+        ArrayList<String[]> returnVal = this.itemDBConn.selectFromTable(statement);
+        if(returnVal.size() == 0){
+            return null;
+        }
+        ArrayList<Item> itemList = new ArrayList<>();
+        for(String[] itemEntry: returnVal){
+            itemList.add(createItemFromArray(itemEntry));
+        }
+        return itemList;
+    }
+
+    public void updateItem(Item item){
+    }
+
+    /**
+     * Helper method to create an item from an item database entry.
+     * @param itemEntry string array of the elements of the item.
+     * @return Item created from string array.
+     */
+    private static Item createItemFromArray(String[] itemEntry){
+        Integer id = Integer.parseInt(itemEntry[0]);
         /*Last element is itemType*/
         String itemType = itemEntry[itemEntry.length-1];
         Double price = Double.parseDouble(itemEntry[4]);
@@ -73,12 +110,5 @@ public class ItemDatabase {
                 return item;
         }
         return null;
-    }
-
-    public ArrayList<Item> getAllItems(){
-        return null;
-    }
-
-    public void updateItem(Item item){
     }
 }
