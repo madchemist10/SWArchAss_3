@@ -63,4 +63,10 @@ public interface Item {
      * @return String of this item's properties.
      */
     String[] getDatabaseEntryFormat();
+
+    /**
+     * Build the item in format for display.
+     * @return String representation of the item.
+     */
+    String displayItem();
 }

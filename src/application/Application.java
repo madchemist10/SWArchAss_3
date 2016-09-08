@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class Application {
 
     private Interaction dataInteraction;
-    private User currentUser = null;
+    private User currentUser;
     private String username;
 
     public Application(){
@@ -33,6 +33,10 @@ public class Application {
 
     public String getUsername(){
         return this.username;
+    }
+
+    public User getCurrentUser(){
+        return this.currentUser;
     }
 
     /**

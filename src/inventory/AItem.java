@@ -118,6 +118,18 @@ public abstract class AItem implements Item {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String displayItem(){
+        String display = "";
+        for(String str: getDatabaseEntryFormat()){
+            display += str + ",";
+        }
+        return display.substring(0, display.length()-1);
+    }
+
+    /**
      * Helper method to get a list of items in the
      * @return formatted string separated by commas.
      */
