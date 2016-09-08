@@ -103,7 +103,7 @@ public abstract class AItem implements Item {
     }
 
     /**
-     * Format used is {ID, Name, Description, Quantity, Price}
+     * Format used is {ID, Name, Description, Quantity, Price, ItemType}
      * {@inheritDoc}
      */
     @Override

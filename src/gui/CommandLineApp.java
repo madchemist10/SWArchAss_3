@@ -77,8 +77,8 @@ public class CommandLineApp {
      */
     private static void displayItems(ArrayList<Item> items){
         /*Ask user for type of item to search through.*/
-        String itemType = "";
-
+        output(GUIConstants.ASK_FOR_ITEM_TYPE);
+        String itemType = userInput();
         for(Item item: items){
             if(item.getItemType().equals(itemType)) {
                 output(item.displayItem());

@@ -32,4 +32,13 @@ public interface AppConstants {
     String HOUSEHOLD_ITEM = "HOUSEHOLD_ITEM";
     String SMALL_ELECTRONICS = "SMALL_ELECTRONICS";
 
+    /*User table headers.*/
+    String USERNAME = "Username";
+    String CREDIT_CARD = "CreditCard";
+    String SHIPPING_ADDRESS = "ShippingAddress";
+    String[] USER_HEADERS = {USERNAME, CREDIT_CARD, SHIPPING_ADDRESS};
+
+    /*User purchase headers.*/
+    String ITEM_ID_LIST = "ItemIDList";
+    String[] PURCHASE_HEADERS = {USERNAME, ITEM_ID_LIST};
 }

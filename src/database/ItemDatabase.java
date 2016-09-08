@@ -10,29 +10,25 @@ import java.util.ArrayList;
  * the item database.
  */
 public class ItemDatabase {
-
-    /** Reference to the database connection for the
-     * item database for retrieval and adding.*/
-    private DatabaseConn itemDBConn;
-
     /**
-     *
+     * Constructor used only for instantiation.
      */
     public ItemDatabase(){
-        this.itemDBConn = new DatabaseConn(AppConstants.ITEM_DATABASE);
+        //nothing to be done.
     }
 
     /**
      * Add an item to the database.
      * @param item the item to add.
      */
-    public void addItem(Item item){
+    void addItem(Item item){
         String[] itemEntry = item.getDatabaseEntryFormat();
         String values = AItem.getItemHeadersDBFormat(itemEntry);
         String insert = AItem.getItemHeadersDBFormat(AppConstants.ITEM_HEADERS);
         String statement = DBStatementBuilder.insertStatement(AppConstants.ITEM_TABLE, insert) +
                 DBStatementBuilder.valueStatement(values);
-        this.itemDBConn.insertIntoTable(statement);
+        DatabaseConn itemDBConn = new DatabaseConn(AppConstants.ITEM_DATABASE);
+        itemDBConn.insertIntoTable(statement);
     }
 
     /**
@@ -47,7 +43,8 @@ public class ItemDatabase {
         String statement = DBStatementBuilder.selectStatement("*") +
                 DBStatementBuilder.fromStatement(AppConstants.ITEM_TABLE) +
                 DBStatementBuilder.whereStatement(where);
-        ArrayList<String[]> returnVal = this.itemDBConn.selectFromTable(statement);
+        DatabaseConn itemDBConn = new DatabaseConn(AppConstants.ITEM_DATABASE);
+        ArrayList<String[]> returnVal = itemDBConn.selectFromTable(statement);
         if(returnVal.size() == 0){
                 return null;
         }
@@ -63,7 +60,8 @@ public class ItemDatabase {
         /*Select * from Item*/
         String statement = DBStatementBuilder.selectStatement("*") +
                 DBStatementBuilder.fromStatement(AppConstants.ITEM_TABLE);
-        ArrayList<String[]> returnVal = this.itemDBConn.selectFromTable(statement);
+        DatabaseConn itemDBConn = new DatabaseConn(AppConstants.ITEM_DATABASE);
+        ArrayList<String[]> returnVal = itemDBConn.selectFromTable(statement);
         if(returnVal.size() == 0){
             return null;
         }

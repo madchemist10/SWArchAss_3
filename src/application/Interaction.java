@@ -27,11 +27,11 @@ public class Interaction {
 
     }
 
-    public ArrayList<Item> getItemList(){
+    ArrayList<Item> getItemList(){
         return itemDatabase.getAllItems();
     }
 
-    public User getUser(String username){
+    User getUser(String username){
         return userDatabase.getUser(username);
     }
 }

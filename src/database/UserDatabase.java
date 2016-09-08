@@ -13,7 +13,7 @@ public class UserDatabase {
         this.userDBConn = new DatabaseConn(AppConstants.USER_DATABASE);
     }
 
-    public void addUser(User user){
+    void addUser(User user){
 
     }
 
