@@ -1,5 +1,6 @@
 package application;
 
+import cart.Cart;
 import database.ItemDatabase;
 import database.UserDatabase;
 import inventory.Item;
@@ -23,8 +24,10 @@ public class Interaction {
 
     }
 
-    public void updateItemList(){
-
+    public void updateItemList(Cart cart){
+        for(Item item: cart.getItems()){
+            itemDatabase.updateItem(item);
+        }
     }
 
     ArrayList<Item> getItemList(){

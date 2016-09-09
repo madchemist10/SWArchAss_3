@@ -48,6 +48,7 @@ public class Application {
     }
 
     private void confirmPurchase(){
+        dataInteraction.updateItemList(currentUser.getCart());
         currentUser.purchaseCart();
     }
 

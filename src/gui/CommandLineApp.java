@@ -33,6 +33,7 @@ public class CommandLineApp {
             /*Get user choice*/
             String userInput = userInput();
             if(userInput == null || userInput.equalsIgnoreCase(GUIConstants.EXIT)){
+                app.logout();   //log the user out on exit
                 return;
             }
             handleMainMenuDecision(userInput);
@@ -54,11 +55,15 @@ public class CommandLineApp {
 
     private static void displayMainMenu(){
         output("Welcome to your online shopping site.");
-        output("0. Display All items.");
+        output("0. Search items.");
         output(String.format("1. Display %s's cart.",app.getUsername()));
         output("Exit.");
     }
 
+    /**
+     * Handle the user's decision from the main menu.
+     * @param index String of the user's choice 0-1
+     */
     private static void handleMainMenuDecision(String index){
         switch(index){
             /*Display all items in database.*/
@@ -67,7 +72,7 @@ public class CommandLineApp {
                 break;
             /*Display user's cart.*/
             case "1":
-                displayItems(app.getCurrentUser().getCart().getItems(), false);
+                displayCart();
                 break;
         }
     }
@@ -88,7 +93,7 @@ public class CommandLineApp {
                 displayCategoryDecision();
                 /*Get user choice*/
                 String userInput = userInput();
-                if(userInput.equalsIgnoreCase(GUIConstants.BACK)){
+                if(userInput.equalsIgnoreCase(GUIConstants.BACK)){  //exit condition
                     return; //go back to main menu.
                 }
                 itemType = handleCategoryDecision(userInput);
@@ -106,6 +111,10 @@ public class CommandLineApp {
         }
     }
 
+    /**
+     * Menu for giving the user options for categories of
+     * items to view.
+     */
     private static void displayCategoryDecision(){
         output("Choose your category:");
         output("0. Books");
@@ -115,6 +124,12 @@ public class CommandLineApp {
         output("Back.");
     }
 
+    /**
+     * Handling of the decision from the user of which decision
+     * is given.
+     * @param index user choice of 0-3
+     * @return String representation of the category chosen.
+     */
     private static String handleCategoryDecision(String index){
         switch(index){
             case "0":
@@ -127,5 +142,63 @@ public class CommandLineApp {
                 return AppConstants.SMALL_ELECTRONICS;
         }
         return index;
+    }
+
+    private static void displayCart(){
+        output(""+app.getUsername()+"'s Cart.");
+        displayItems(app.getCurrentUser().getCart().getItems(), false);
+        while(true) {
+            displayCartDecision();
+                /*Get user choice*/
+            String userInput = userInput();
+            if(userInput.equalsIgnoreCase(GUIConstants.BACK)){  //exit condition
+                return; //go back to cart menu.
+            }
+            handleCartDecision(userInput);
+        }
+    }
+
+    /**
+     * Display to the user what options are available when
+     * looking at the cart.
+     */
+    private static void displayCartDecision(){
+        output("0. Purchase Cart.");
+        output("Back.");
+    }
+
+    /**
+     * Handle user's choice for what to do when looking at the cart.
+     * @param index user's choice
+     */
+    private static void handleCartDecision(String index){
+        switch(index){
+            case "0":
+                output("Are you sure you want to purchase your cart? >>");
+                confirmPurchase();
+                break;
+            case "1":
+                break;
+        }
+    }
+
+    /**
+     * Ask the user to confirm to purchase the cart.
+     */
+    private static void confirmPurchase(){
+        while(true){
+            String userInput = userInput();
+            switch(userInput){
+                case "Y":
+                case "y":
+                    /*Purchase the cart if the user confirmed.*/
+                    app.getCurrentUser().purchaseCart();
+                    return;
+                case "N":
+                case "n":
+                    /*Cart not purchased, return to cart decisions.*/
+                    return;
+            }
+        }
     }
 }

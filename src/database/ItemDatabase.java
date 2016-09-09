@@ -72,7 +72,47 @@ public class ItemDatabase {
         return itemList;
     }
 
+    /**
+     * Update an item in the database with the item's new data.
+     * This is called when a cart is purchased. Item given is
+     * an item from the cart. The quantity in this item
+     * is the quantity that is ordered. This item's quantity
+     * must be subtracted from current quantity.
+     * @param item new item to update entry in database.
+     */
     public void updateItem(Item item){
+        /*Update Item Set [Column = Data],... Where Id = {Id}*/
+        String statement = DBStatementBuilder.updateStatement(AppConstants.ITEM_TABLE);
+        String setStatement = "";
+        String[] itemDatabaseEntry = item.getDatabaseEntryFormat();
+        /*Although at this time, only one item is pulled from array,
+        * used for loop for modularity if other functionality is implemented.*/
+        for(int i = 0; i < AppConstants.ITEM_HEADERS.length; i++){
+            switch(AppConstants.ITEM_HEADERS[i]){
+                case AppConstants.ID:
+                    break;
+                case AppConstants.NAME:
+                    break;
+                case AppConstants.DESCRIPTION:
+                    break;
+                case AppConstants.QUANTITY:
+                    int currentQuantityOrdered = Integer.parseInt(itemDatabaseEntry[i]);
+                    Item databaseItem = getItem(item.getId());
+                    int newItemQuantity = databaseItem.getQuantity()-currentQuantityOrdered;
+                    setStatement+=AppConstants.QUANTITY+"='"+newItemQuantity+"'";
+                    break;
+                case AppConstants.PRICE:
+                    break;
+                case AppConstants.ITEM_TYPE:
+                    break;
+            }
+            /*If more parameters of an item are to be updated, need to add commas after
+            * each parameter to update.*/
+        }
+        statement += DBStatementBuilder.setStatement(setStatement);
+        statement += DBStatementBuilder.whereStatement(AppConstants.ID+"='"+item.getId()+"'");
+        DatabaseConn itemDBConn = new DatabaseConn(AppConstants.ITEM_DATABASE);
+        itemDBConn.updateTableEntry(statement);
     }
 
     /**

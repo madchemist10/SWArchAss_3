@@ -116,6 +116,7 @@ public class User {
      */
     public void purchaseCart(){
         this.previousPurchases.add(this.cart);
+        this.cart = new Cart(); //refresh the cart to start over.
     }
 
 }
