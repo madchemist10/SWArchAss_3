@@ -1,8 +1,10 @@
 package database;
 
 import cart.Cart;
+import com.sun.xml.internal.fastinfoset.util.StringArray;
 import constants.AppConstants;
 import user.User;
+import java.util.ArrayList;
 
 import java.util.ArrayList;
 
@@ -15,6 +17,18 @@ public class UserDatabase {
 
     void addUser(User user){
 
+    }
+
+    public ArrayList<String[]> getAllUsers(){
+        /*Select * from User*/
+        String statement = DBStatementBuilder.selectStatement(AppConstants.USERNAME) +
+                DBStatementBuilder.fromStatement(AppConstants.USER_TABLE);
+        DatabaseConn userDBConn = new DatabaseConn(AppConstants.USER_DATABASE);
+        ArrayList<String[]> returnVal = userDBConn.selectFromTable(statement);
+        if(returnVal.size() == 0){
+            return null;
+        }
+        return returnVal;
     }
 
     public User getUser(String username){

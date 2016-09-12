@@ -34,6 +34,8 @@ public class Interaction {
         return itemDatabase.getAllItems();
     }
 
+    public ArrayList<String[]> getUserList() { return userDatabase.getAllUsers(); }
+
     User getUser(String username){
         return userDatabase.getUser(username);
     }

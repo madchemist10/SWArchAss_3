@@ -1,6 +1,8 @@
 package gui;
 
 import application.Application;
+import application.Interaction;
+import user.User;
 import constants.AppConstants;
 import constants.GUIConstants;
 import inventory.Item;
@@ -13,9 +15,12 @@ import java.util.Scanner;
  */
 public class CommandLineApp {
     private static Application app;
+    private static Interaction interaction;
 
     public static void main(String[] args) {
         app = new Application();
+        interaction = new Interaction();
+        ArrayList<String[]> userList = new ArrayList<>();
         /*If the application has been given a command line
         * argument, the first element must be the username.*/
         if(args.length > 0){
@@ -25,18 +30,28 @@ public class CommandLineApp {
             output(GUIConstants.ASK_FOR_USERNAME);
         }
 
-        /*Display the user options for either search
-        * for an item to add to cart, or to view
-        * the current cart.*/
-        while(true) {
-            displayMainMenu();
-            /*Get user choice*/
-            String userInput = userInput();
-            if(userInput == null || userInput.equalsIgnoreCase(GUIConstants.EXIT)){
-                app.logout();   //log the user out on exit
-                return;
+        String userName = userInput();
+        userList = interaction.getUserList();
+        if (userList == null)
+        {
+            output("Username not found.");
+        }
+        else if (userList.contains(new String[] {userName}))
+        {
+           /*Display the user options for either search
+            * for an item to add to cart, or to view
+            * the current cart.
+            */
+            while(true) {
+                displayMainMenu();
+                /*Get user choice*/
+                String userInput = userInput();
+                if(userInput == null || userInput.equalsIgnoreCase(GUIConstants.EXIT)){
+                    app.logout();   //log the user out on exit
+                    return;
+                }
+                handleMainMenuDecision(userInput);
             }
-            handleMainMenuDecision(userInput);
         }
     }
 
