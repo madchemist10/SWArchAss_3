@@ -76,21 +76,21 @@ public class DatabaseCreation {
         }
         while(id >= 5 && id < 10)
         {
-            ChildrenToys toy = new ChildrenToys(price++, quantity++, "Child's Toy_" + id, "Test Childrens Toy #:" + id);
+            ChildrenToys toy = new ChildrenToys(price++, quantity++, "ChildrensToy_" + id, "Test Childrens Toy #:" + id);
             toy.setID(id);
             itemList.add(toy);
             id++;
         }
         while(id >= 10 && id < 15)
         {
-            HouseholdItem householdItem = new HouseholdItem(price++, quantity++, "Household Item_" + id, "Test Household Item #:" + id);
+            HouseholdItem householdItem = new HouseholdItem(price++, quantity++, "HouseholdItem_" + id, "Test Household Item #:" + id);
             householdItem.setID(id);
             itemList.add(householdItem);
             id++;
         }
         while(id >= 15 && id < 20)
         {
-            SmallElectronics electronic = new SmallElectronics(price++, quantity++, "Small Electronic_" + id, "Test Small Electronic #:" + id);
+            SmallElectronics electronic = new SmallElectronics(price++, quantity++, "SmallElectronic_" + id, "Test Small Electronic #:" + id);
             electronic.setID(id);
             itemList.add(electronic);
             id++;
