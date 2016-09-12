@@ -119,4 +119,15 @@ public class User {
         this.cart = new Cart(); //refresh the cart to start over.
     }
 
+    /**
+     * Format used is {USERNAME, SHIPPING_ADDRESS, CREDIT_CARD}
+     */
+    public String[] getDatabaseEntryFormat(){
+        return new String[] {
+                this.getUsername(),
+                this.getShippingAddress(),
+                this.getCreditCard()
+        };
+    }
+
 }

@@ -89,4 +89,39 @@ public class Cart {
     private void updateTotal(Double price){
         this.totalPrice += price;
     }
+
+    /**
+     * Retrieve this carts database entry in string[][] format.
+     *[[{ID},{QUANTITY}],[{ID},{QUANTITY}],...,[{ID},{QUANTITY}]]
+     * @return array of strings for this cart.
+     */
+    public String[] getCartDatabaseEntry(){
+        ArrayList<String[]> itemList = new ArrayList<>();
+        for(Item item: this.getItems()){
+            /*[{ID},{QUANTITY}]*/
+            itemList.add(new String[]{item.getId().toString(), item.getQuantity().toString()});
+        }
+        String[][] cart = new String[itemList.size()][2];
+        /*[[{ID},{QUANTITY}],[{ID},{QUANTITY}],...,[{ID},{QUANTITY}]]*/
+        for(int i = 0; i < itemList.size(); i++){
+            cart[i] = itemList.get(i);
+        }
+        return generateCartDatabaseEntry(cart);
+    }
+
+    private String[] generateCartDatabaseEntry(String[][] cart){
+        String[] cartEntry = new String[cart.length];
+        for(int i = 0; i < cart.length; i++){
+            String str = "";
+            /*{ID},{QUANTITY}*/
+            for(int j = 0; j < cart[i].length; j++){
+                str+=cart[i][j];
+                if(j != cart[i].length-1){
+                    str+=",";
+                }
+            }
+            cartEntry[i] = str;
+        }
+        return cartEntry;
+    }
 }
