@@ -52,7 +52,7 @@ public class Application {
         return currentUser.getPreviousPurchases();
     }
 
-    private void confirmPurchase(){
+    public void confirmPurchase(){
         dataInteraction.updateItemList(currentUser.getCart());
         currentUser.purchaseCart();
     }

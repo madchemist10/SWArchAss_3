@@ -2,7 +2,6 @@ package gui;
 
 import application.Application;
 import application.Interaction;
-import user.User;
 import constants.AppConstants;
 import constants.GUIConstants;
 import inventory.Item;
@@ -15,11 +14,10 @@ import java.util.Scanner;
  */
 public class CommandLineApp {
     private static Application app;
-    private static Interaction interaction;
 
     public static void main(String[] args) {
         app = new Application();
-        interaction = new Interaction();
+        Interaction interaction = new Interaction();
         /*If the application has been given a command line
         * argument, the first element must be the username.*/
         if(args.length > 0){
@@ -97,9 +95,10 @@ public class CommandLineApp {
      *                for the category to display.
      */
     private static void displayItems(ArrayList<Item> items, boolean askUser){
-        String itemType = null;
         /*Ask user for type of item to search through.*/
         if(askUser){
+            /*For the Category case.*/
+            String itemType;
             output(GUIConstants.ASK_FOR_ITEM_TYPE);
             while(true) {
                 displayCategoryDecision();
@@ -115,9 +114,14 @@ public class CommandLineApp {
                     break;
                 }
             }
-        }
-        for(Item item: items){
-            if(itemType != null && item.getItemType().equals(itemType)) {
+            for(Item item: items){
+                if(item.getItemType().equals(itemType)) {
+                    output(item.displayItem());
+                }
+            }
+        } else {
+            /*For the User Cart case.*/
+            for (Item item : items) {
                 output(item.displayItem());
             }
         }
@@ -204,7 +208,7 @@ public class CommandLineApp {
                 case "Y":
                 case "y":
                     /*Purchase the cart if the user confirmed.*/
-                    app.getCurrentUser().purchaseCart();
+                    app.confirmPurchase();
                     return;
                 case "N":
                 case "n":

@@ -1,6 +1,7 @@
 package user;
 
 import cart.Cart;
+import database.UserDatabase;
 import inventory.Item;
 
 import java.util.ArrayList;
@@ -115,6 +116,7 @@ public class User {
      * cart to this user's previous purchases.
      */
     public void purchaseCart(){
+        this.writePurchasedCartToDB();
         this.previousPurchases.add(this.cart);
         this.cart = new Cart(); //refresh the cart to start over.
     }
@@ -135,6 +137,11 @@ public class User {
      */
     public void logout(){
 
+    }
+
+    private void writePurchasedCartToDB(){
+        UserDatabase userDBConn = new UserDatabase();
+        userDBConn.addCartToDB(this.cart, this.getUsername());
     }
 
 }

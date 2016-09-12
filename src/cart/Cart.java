@@ -109,18 +109,26 @@ public class Cart {
         return generateCartDatabaseEntry(cart);
     }
 
+    /**
+     * Create a String[] where the items are comma separated.
+     * @param cart string[][] of the cart of items.
+     *             list of items where each item only has id and quantity.
+     * @return [---{ID},{QUANTITY}---,---{ID},{QUANTITY}---,...]
+     */
     private String[] generateCartDatabaseEntry(String[][] cart){
         String[] cartEntry = new String[cart.length];
+        /*For each item.*/
         for(int i = 0; i < cart.length; i++){
-            String str = "";
-            /*{ID},{QUANTITY}*/
+            String temp = "---";
+            /*---{ID},{QUANTITY}---*/
             for(int j = 0; j < cart[i].length; j++){
-                str+=cart[i][j];
+                temp+=cart[i][j];
                 if(j != cart[i].length-1){
-                    str+=",";
+                    temp+=",";
                 }
             }
-            cartEntry[i] = str;
+            temp+="---";
+            cartEntry[i] = temp;
         }
         return cartEntry;
     }

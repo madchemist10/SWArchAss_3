@@ -35,6 +35,21 @@ public class UserDatabase {
         return returnVal;
     }
 
+    public void addCartToDB(Cart cart, String username){
+        /*Format of {---{ID},{QUANTITY}---,---{ID},{QUANTITY}---,...}*/
+        String[] cartDBEntry = cart.getCartDatabaseEntry();
+        /*Format of {'..---{ID},{QUANTITY}---,---{ID},{QUANTITY}---,---...---..]}*/
+        String items = "\'"+Interaction.getHeadersDBFormat(cartDBEntry)+"\'";
+        String[] cartEntry = new String[]{username,items};
+        String insert = Interaction.getHeadersDBFormat(AppConstants.PURCHASE_HEADERS);
+        String values = Interaction.getHeadersDBFormat(cartEntry);
+        String statement = DBStatementBuilder.insertStatement(AppConstants.USER_PURCHASE_TABLE, insert) +
+                DBStatementBuilder.valueStatement(values);
+        DatabaseConn userDBConn = new DatabaseConn(AppConstants.USER_DATABASE);
+        userDBConn.insertIntoTable(statement);
+    }
+
+
     public User getUser(String username){
         String where = AppConstants.USERNAME + " = '" + username + "'";
         /*Select * from USER Where USERNAME = '{username}'*/
@@ -78,7 +93,7 @@ public class UserDatabase {
                 DBStatementBuilder.whereStatement(where);
         DatabaseConn userDBConn = new DatabaseConn(AppConstants.USER_DATABASE);
         ArrayList<String[]> returnVal = userDBConn.selectFromTable(statement);
-        /*Given in the form of List{[ID,QUANTITY],...[ID,QUANTITY]}*/
+        /*Given in the form of List{[---ID,QUANTITY---,...],...}*/
         if(returnVal.size() == 0){
             return null;
         }
@@ -86,17 +101,17 @@ public class UserDatabase {
         /*For each cart in the return value from the sql query.
         * In the form of a String[] where the strings are {ID,QUANTITY}*/
         for(String[] userCarts: returnVal){
-            /*create a placeholder for the user carts to be stored
-            * in the form of [[{ID},{QUANTITY}],...[]].
-            * This holds the items in each cart.*/
-            String[][] cart = new String[userCarts.length][2];
-            /*For each item in the cart. Store the parsed
-            * cart into the above placeholder cart.*/
-            for(int i = 0; i < userCarts.length; i++){
-                cart[i] = parseItemEntry(userCarts[i]);
-            }
-            /*Generate the cart from the placeholder array.*/
-            userPurchases.add(createCartFromArray(cart));
+//            /*create a placeholder for the user carts to be stored
+//            * in the form of [[{ID},{QUANTITY}],...[]].
+//            * This holds the items in each cart.*/
+//            String[][] cart = new String[userCarts.length][2];
+//            /*For each item in the cart. Store the parsed
+//            * cart into the above placeholder cart.*/
+//            for(int i = 0; i < userCarts.length; i++){
+//                cart[i] = parseItemEntry(userCarts[i]);
+//            }
+//            /*Generate the cart from the placeholder array.*/
+            userPurchases.add(createCartFromArray(parseCart(userCarts[1])));
         }
         return userPurchases;
     }
@@ -127,5 +142,31 @@ public class UserDatabase {
      */
     private static String[] parseItemEntry(String itemEntry){
         return itemEntry.split(",");
+    }
+
+    /**
+     * Receive a formatted item in the form of:
+     * ---{ID},{QUANTITY}---
+     * @param item string representation of database item.
+     * @return [{ID},{QUANTITY}]
+     */
+    private static String[] parseItem(String item){
+        item = item.replace("---","");
+        return item.split(",");
+    }
+
+    /**
+     * Receive a formatted cart in the form of:
+     * ---{ID},{QUANTITY}---,---{ID},{QUANTITY}---,...
+     * @param cart string representation of a database cart.
+     * @return [[{ID},{QUANTITY}],...]
+     */
+    private static String[][] parseCart(String cart){
+        String[] items = cart.split(",");
+        String[][] parsedCart = new String[items.length][2];
+        for(int i = 0; i < items.length; i++){
+            parsedCart[i] = parseItem(items[0]);
+        }
+        return parsedCart;
     }
 }
