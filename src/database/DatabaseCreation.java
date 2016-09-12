@@ -1,8 +1,7 @@
 package database;
 
 import constants.AppConstants;
-import inventory.Books;
-import inventory.Item;
+import inventory.*;
 import user.User;
 
 import java.util.ArrayList;
@@ -73,6 +72,27 @@ public class DatabaseCreation {
             Books newBook = new Books(price++,quantity++,"Book_"+id,"Test Book Description ID:"+id);
             newBook.setID(id);
             itemList.add(newBook);
+            id++;
+        }
+        while(id >= 5 && id < 10)
+        {
+            ChildrenToys toy = new ChildrenToys(price++, quantity++, "Child's Toy_" + id, "Test Childrens Toy #:" + id);
+            toy.setID(id);
+            itemList.add(toy);
+            id++;
+        }
+        while(id >= 10 && id < 15)
+        {
+            HouseholdItem householdItem = new HouseholdItem(price++, quantity++, "Household Item_" + id, "Test Household Item #:" + id);
+            householdItem.setID(id);
+            itemList.add(householdItem);
+            id++;
+        }
+        while(id >= 15 && id < 20)
+        {
+            SmallElectronics electronic = new SmallElectronics(price++, quantity++, "Small Electronic_" + id, "Test Small Electronic #:" + id);
+            electronic.setID(id);
+            itemList.add(electronic);
             id++;
         }
         return itemList;
