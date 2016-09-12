@@ -81,7 +81,7 @@ public class User {
 
     /**
      * Retrieve this user's credit card number.
-     * @return this uer's credit card number.
+     * @return this user's credit card number.
      */
     public String getCreditCard(){
         return this.creditCard;
@@ -139,6 +139,10 @@ public class User {
 
     }
 
+    /**
+     * Used to purchase a cart, this is conducted by
+     * adding this cart to the database.
+     */
     private void writePurchasedCartToDB(){
         UserDatabase userDBConn = new UserDatabase();
         userDBConn.addCartToDB(this.cart, this.getUsername());

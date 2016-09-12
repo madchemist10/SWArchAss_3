@@ -99,19 +99,11 @@ public class UserDatabase {
         }
         ArrayList<Cart> userPurchases = new ArrayList<>();
         /*For each cart in the return value from the sql query.
-        * In the form of a String[] where the strings are {ID,QUANTITY}*/
+        * In the form of a String[] where the strings are ---ID,QUANTITY---,...*/
         for(String[] userCarts: returnVal){
-//            /*create a placeholder for the user carts to be stored
-//            * in the form of [[{ID},{QUANTITY}],...[]].
-//            * This holds the items in each cart.*/
-//            String[][] cart = new String[userCarts.length][2];
-//            /*For each item in the cart. Store the parsed
-//            * cart into the above placeholder cart.*/
-//            for(int i = 0; i < userCarts.length; i++){
-//                cart[i] = parseItemEntry(userCarts[i]);
-//            }
-//            /*Generate the cart from the placeholder array.*/
-            userPurchases.add(createCartFromArray(parseCart(userCarts[1])));
+            String[][] parsedCart = parseCart(userCarts[1]);
+            Cart userCart = createCartFromArray(parsedCart);
+            userPurchases.add(userCart);
         }
         return userPurchases;
     }
@@ -162,7 +154,7 @@ public class UserDatabase {
      * @return [[{ID},{QUANTITY}],...]
      */
     private static String[][] parseCart(String cart){
-        String[] items = cart.split(",");
+        String[] items = cart.split("---,---");
         String[][] parsedCart = new String[items.length][2];
         for(int i = 0; i < items.length; i++){
             parsedCart[i] = parseItem(items[0]);
