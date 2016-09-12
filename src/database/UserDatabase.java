@@ -1,11 +1,9 @@
 package database;
 
+import application.Interaction;
 import cart.Cart;
-import com.sun.xml.internal.fastinfoset.util.StringArray;
 import constants.AppConstants;
 import user.User;
-import java.util.ArrayList;
-
 import java.util.ArrayList;
 
 /**
@@ -16,7 +14,13 @@ public class UserDatabase {
     }
 
     void addUser(User user){
-
+        String[] userEntry = user.getDatabaseEntryFormat();
+        String values = Interaction.getHeadersDBFormat(userEntry);
+        String insert = Interaction.getHeadersDBFormat(AppConstants.USER_HEADERS);
+        String statement = DBStatementBuilder.insertStatement(AppConstants.USER_TABLE, insert) +
+                DBStatementBuilder.valueStatement(values);
+        DatabaseConn userDBConn = new DatabaseConn(AppConstants.USER_DATABASE);
+        userDBConn.insertIntoTable(statement);
     }
 
     public ArrayList<String[]> getAllUsers(){

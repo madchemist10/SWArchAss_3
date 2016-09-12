@@ -130,4 +130,11 @@ public class User {
         };
     }
 
+    /**
+     * Write the user's data to the database.
+     */
+    public void logout(){
+
+    }
+
 }

@@ -20,7 +20,6 @@ public class CommandLineApp {
     public static void main(String[] args) {
         app = new Application();
         interaction = new Interaction();
-        ArrayList<String[]> userList = new ArrayList<>();
         /*If the application has been given a command line
         * argument, the first element must be the username.*/
         if(args.length > 0){
@@ -31,26 +30,24 @@ public class CommandLineApp {
         }
 
         String userName = userInput();
-        userList = interaction.getUserList();
-        if (userList == null)
-        {
-            output("Username not found.");
-        }
-        else if (userList.contains(new String[] {userName}))
-        {
-           /*Display the user options for either search
-            * for an item to add to cart, or to view
-            * the current cart.
-            */
-            while(true) {
-                displayMainMenu();
-                /*Get user choice*/
-                String userInput = userInput();
-                if(userInput == null || userInput.equalsIgnoreCase(GUIConstants.EXIT)){
-                    app.logout();   //log the user out on exit
-                    return;
+        ArrayList<String[]> userList = interaction.getUserList();
+        for(String[] userDBName: userList){
+            if(userDBName[0].equals(userName)){
+                app.login(userName);
+               /*Display the user options for either search
+                * for an item to add to cart, or to view
+                * the current cart.
+                */
+                while (true) {
+                    displayMainMenu();
+                    /*Get user choice*/
+                    String userInput = userInput();
+                    if (userInput == null || userInput.equalsIgnoreCase(GUIConstants.EXIT)) {
+                        app.logout();   //log the user out on exit
+                        return;
+                    }
+                    handleMainMenuDecision(userInput);
                 }
-                handleMainMenuDecision(userInput);
             }
         }
     }

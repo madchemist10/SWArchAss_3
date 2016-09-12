@@ -39,4 +39,17 @@ public class Interaction {
     User getUser(String username){
         return userDatabase.getUser(username);
     }
+
+    /**
+     * Helper method to get a list of comma separated strings.
+     * @return formatted string separated by commas.
+     */
+    public static String getHeadersDBFormat(String[] list){
+        String elements = "";
+        for(String element: list){
+            elements+="'"+element+"',";
+        }
+        /*Remove the last comma as we do not need it.*/
+        return elements.substring(0, elements.length()-1);
+    }
 }

@@ -27,7 +27,12 @@ public class Application {
         currentUser = dataInteraction.getUser(username);
     }
 
+    /**
+     * Called when the user has terminated the application by commandline.
+     * Used to save state for the user's persistent data.
+     */
     public void logout(){
+        currentUser.logout();
         currentUser = null;
     }
 
