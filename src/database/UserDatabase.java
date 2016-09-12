@@ -15,8 +15,8 @@ public class UserDatabase {
 
     void addUser(User user){
         String[] userEntry = user.getDatabaseEntryFormat();
-        String values = Interaction.getHeadersDBFormat(userEntry);
-        String insert = Interaction.getHeadersDBFormat(AppConstants.USER_HEADERS);
+        String values = Interaction.getDBFormat(userEntry);
+        String insert = Interaction.getDBFormat(AppConstants.USER_HEADERS);
         String statement = DBStatementBuilder.insertStatement(AppConstants.USER_TABLE, insert) +
                 DBStatementBuilder.valueStatement(values);
         DatabaseConn userDBConn = new DatabaseConn(AppConstants.USER_DATABASE);
@@ -39,10 +39,10 @@ public class UserDatabase {
         /*Format of {---{ID},{QUANTITY}---,---{ID},{QUANTITY}---,...}*/
         String[] cartDBEntry = cart.getCartDatabaseEntry();
         /*Format of {'..---{ID},{QUANTITY}---,---{ID},{QUANTITY}---,---...---..]}*/
-        String items = "\'"+Interaction.getHeadersDBFormat(cartDBEntry)+"\'";
+        String items = Interaction.getCommaSeparatedList(cartDBEntry);
         String[] cartEntry = new String[]{username,items};
-        String insert = Interaction.getHeadersDBFormat(AppConstants.PURCHASE_HEADERS);
-        String values = Interaction.getHeadersDBFormat(cartEntry);
+        String insert = Interaction.getDBFormat(AppConstants.PURCHASE_HEADERS);
+        String values = Interaction.getDBFormat(cartEntry);
         String statement = DBStatementBuilder.insertStatement(AppConstants.USER_PURCHASE_TABLE, insert) +
                 DBStatementBuilder.valueStatement(values);
         DatabaseConn userDBConn = new DatabaseConn(AppConstants.USER_DATABASE);

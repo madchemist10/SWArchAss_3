@@ -44,10 +44,19 @@ public class Interaction {
      * Helper method to get a list of comma separated strings.
      * @return formatted string separated by commas.
      */
-    public static String getHeadersDBFormat(String[] list){
+    public static String getDBFormat(String[] list){
         String elements = "";
         for(String element: list){
             elements+="'"+element+"',";
+        }
+        /*Remove the last comma as we do not need it.*/
+        return elements.substring(0, elements.length()-1);
+    }
+
+    public static String getCommaSeparatedList(String[] list){
+        String elements = "";
+        for(String element: list){
+            elements += element+",";
         }
         /*Remove the last comma as we do not need it.*/
         return elements.substring(0, elements.length()-1);

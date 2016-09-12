@@ -1,5 +1,6 @@
 package database;
 
+import cart.Cart;
 import constants.AppConstants;
 import inventory.*;
 import user.User;
@@ -58,6 +59,7 @@ public class DatabaseCreation {
         for(Item item: generateItemList()){
             itemDatabase.addItem(item);
         }
+
         for(User user: generateUserList()){
             userDatabase.addUser(user);
         }
@@ -99,14 +101,34 @@ public class DatabaseCreation {
     }
 
     private static ArrayList<User> generateUserList(){
+        UserDatabase userDB = new UserDatabase();
         ArrayList<User> userList = new ArrayList<>();
         int counter = 0;
         String userName = "User_";
         while(counter < 5){
-            User newUser = new User(userName+counter,null);
+            ArrayList<Cart> cartList = generateCartList();
+            User newUser = new User(userName+counter,cartList);
+            for(Cart cart: cartList){
+                userDB.addCartToDB(cart,newUser.getUsername());
+            }
             userList.add(newUser);
             counter++;
         }
         return userList;
+    }
+
+    private static ArrayList<Cart> generateCartList(){
+        ItemDatabase itemDB = new ItemDatabase();
+        ArrayList<Cart> cartList = new ArrayList<>();
+        int counter = 0;
+        while(counter < 3){
+            Cart cart = new Cart();
+            cart.addItem(itemDB.getItem(counter),1);
+            cart.addItem(itemDB.getItem(counter+1),1);
+            cart.addItem(itemDB.getItem(counter+2),1);
+            cartList.add(cart);
+            counter++;
+        }
+        return cartList;
     }
 }

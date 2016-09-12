@@ -24,8 +24,8 @@ public class ItemDatabase {
      */
     void addItem(Item item){
         String[] itemEntry = item.getDatabaseEntryFormat();
-        String values = Interaction.getHeadersDBFormat(itemEntry);
-        String insert = Interaction.getHeadersDBFormat(AppConstants.ITEM_HEADERS);
+        String values = Interaction.getDBFormat(itemEntry);
+        String insert = Interaction.getDBFormat(AppConstants.ITEM_HEADERS);
         String statement = DBStatementBuilder.insertStatement(AppConstants.ITEM_TABLE, insert) +
                 DBStatementBuilder.valueStatement(values);
         DatabaseConn itemDBConn = new DatabaseConn(AppConstants.ITEM_DATABASE);
