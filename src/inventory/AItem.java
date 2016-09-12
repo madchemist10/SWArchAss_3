@@ -103,6 +103,7 @@ public abstract class AItem implements Item {
     }
 
     /**
+     * Returns a string object of item data for database storage
      * Format used is {ID, Name, Description, Quantity, Price, ItemType}
      * {@inheritDoc}
      */
@@ -118,6 +119,7 @@ public abstract class AItem implements Item {
     }
 
     /**
+     * Returns a comma separated list of item data
      * {@inheritDoc}
      */
     @Override
