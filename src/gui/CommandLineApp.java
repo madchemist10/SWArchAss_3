@@ -92,7 +92,11 @@ public class CommandLineApp {
         switch(index){
             /*Display all items in database.*/
             case "0":
-                displayItems(app.displayAvailableItems(), true);
+                boolean displayed = displayItems(app.displayAvailableItems(), true);
+                /*If items are not displayed, then do not enter shop mode.*/
+                if(!displayed){
+                    break;
+                }
                 /*Shop until user types back.*/
                 while(true){
                     if (!(shop())){
@@ -114,7 +118,7 @@ public class CommandLineApp {
      * @param askUser boolean flag to determine if the user should be asked
      *                for the category to display.
      */
-    private static void displayItems(ArrayList<Item> items, boolean askUser){
+    private static boolean displayItems(ArrayList<Item> items, boolean askUser){
         String[][] data = new String[items.size()+1][];
         data[0] = AppConstants.ITEM_DISPLAY_HEADERS;
         int counter = 1;
@@ -128,7 +132,7 @@ public class CommandLineApp {
                 /*Get user choice*/
                 String userInput = userInput();
                 if(userInput.equalsIgnoreCase(GUIConstants.BACK)){  //exit condition
-                    return; //go back to main menu.
+                    return false; //go back to main menu.
                 }
                 itemType = handleCategoryDecision(userInput);
                 /*If the return value from handling is not the same as the user's input,
@@ -151,6 +155,7 @@ public class CommandLineApp {
             }
         }
         printTable(getProperStringArray(data));
+        return true;
     }
 
     /**
@@ -276,6 +281,11 @@ public class CommandLineApp {
                 viewHistory();
                 break;
             case "1":
+                if(app.getCurrentUser().getCart().getItems().size() == 0) {
+                    output("Cart is empty, can not purchase.");
+                    break;
+                }
+                askUserForPurchaseInformation();
                 confirmPurchase();
                 break;
             case "2":
@@ -295,10 +305,8 @@ public class CommandLineApp {
             switch(userInput){
                 case "Y":
                 case "y":
-                    /*Purchase the cart if the user confirmed. and the cart is not empty.*/
-                    if(app.getCurrentUser().getCart().getItems().size() != 0) {
-                        app.confirmPurchase();
-                    }
+                    /*Purchase the cart if the user confirmed.*/
+                    app.confirmPurchase();
                     return;
                 case "N":
                 case "n":
@@ -432,5 +440,24 @@ public class CommandLineApp {
             properStringArray[i] = tempList.get(i);
         }
         return properStringArray;
+    }
+
+    private static void askUserForPurchaseInformation(){
+        while(true) {
+            output(GUIConstants.ASK_FOR_SHIPPING_ADDRESS);
+            String shippingAddress = userInput();
+            if(!shippingAddress.equals("")) {
+                app.getCurrentUser().setShippingAddress(shippingAddress);
+                break;
+            }
+        }
+        while(true) {
+            output(GUIConstants.ASK_FOR_CREDIT_CARD);
+            String creditCard = userInput();
+            if (creditCard.length() == 10) {
+                app.getCurrentUser().setCreditCard(creditCard);
+                break;
+            }
+        }
     }
 }
