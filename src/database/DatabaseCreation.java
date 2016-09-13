@@ -77,6 +77,7 @@ public class DatabaseCreation {
      * IDs of 5-9 (inclusive) are toys
      * IDs of 10-14 (inclusive) are household items
      * IDs of 15-19 (inclusive) are small electronics
+     * @return List of items that are generated.
     * */
     private static ArrayList<Item> generateItemList(){
         ArrayList<Item> itemList = new ArrayList<>();

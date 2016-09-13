@@ -312,7 +312,7 @@ public class CommandLineApp {
      * View the history of the current logged in user.
      */
     private static void viewHistory(){
-        ArrayList<Cart> previousPurchases = app.getCurrentUser().getPreviousPurchases();
+        ArrayList<Cart> previousPurchases = app.viewPreviousPurchases();
         for(Cart cart: previousPurchases){
             String[] cartArray = cart.toStringArray();
             Integer numOfItems = 0;
@@ -360,9 +360,9 @@ public class CommandLineApp {
         Item item = itemDB.getItem(id);
         Integer quantity = Integer.parseInt(cartUpdate[2]);
         if(cmd.equalsIgnoreCase("add")){
-            app.getCurrentUser().addToCart(item,quantity);
+            app.addItemToCart(item,quantity);
         } else if(cmd.equalsIgnoreCase("rem")){
-            app.getCurrentUser().removeFromCart(item,quantity);
+            app.removeItemToCart(item,quantity);
         }
     }
 
