@@ -252,6 +252,11 @@ public class CommandLineApp {
         }
     }
 
+    /**
+     * Update the cart and present to the user the
+     * means to do so. Give the user the format
+     * to input data.
+     */
     private static void updateCart(){
         output("Update item in form of [{'add' or 'rem'},{id},{quantity}");
         output("Example: 'add,0,2'");
@@ -263,6 +268,13 @@ public class CommandLineApp {
         }
     }
 
+    /**
+     * Process the string of the user input for cart updates.
+     * Update the cart accordingly.
+     * @param update formatted string for updating cart.
+     * @throws Exception if parsing fails due to user input format
+     *      incorrect, throw Exception to be handled by calling method.
+     */
     private static void handleCartUpdate(String update) throws Exception{
         String[] cartUpdate = update.split(",");
         String cmd = cartUpdate[0];
