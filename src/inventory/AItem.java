@@ -124,8 +124,10 @@ public abstract class AItem implements Item {
      */
     private String[] getDisplayItem(){
         return new String[]{
+                this.getId().toString(),
                 this.getName(),
-                this.getQuantity().toString()
+                this.getQuantity().toString(),
+                this.getPrice().toString()
         };
     }
 

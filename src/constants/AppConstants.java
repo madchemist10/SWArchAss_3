@@ -25,6 +25,7 @@ public interface AppConstants {
     String PRICE = "Price";
     String ITEM_TYPE = "Type";
     String[] ITEM_HEADERS = {ID, NAME, DESCRIPTION, QUANTITY, PRICE, ITEM_TYPE};
+    String[] ITEM_DISPLAY_HEADERS = {ID,NAME,QUANTITY,PRICE};
 
     /*Item types*/
     String BOOKS = "BOOKS";

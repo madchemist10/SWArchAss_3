@@ -6,6 +6,7 @@ import cart.Cart;
 import constants.AppConstants;
 import constants.GUIConstants;
 import database.ItemDatabase;
+import dnl.utils.text.table.TextTable;
 import inventory.Item;
 
 import java.util.ArrayList;
@@ -115,6 +116,9 @@ public class CommandLineApp {
      *                for the category to display.
      */
     private static void displayItems(ArrayList<Item> items, boolean askUser){
+        String[][] data = new String[items.size()+1][];
+        data[0] = AppConstants.ITEM_DISPLAY_HEADERS;
+        int counter = 1;
         /*Ask user for type of item to search through.*/
         if(askUser){
             /*For the Category case.*/
@@ -136,15 +140,18 @@ public class CommandLineApp {
             }
             for(Item item: items){
                 if(item.getItemType().equals(itemType)) {
-                    output(item.displayItem());
+                    data[counter] = item.displayItem().split(",");
+                    counter++;
                 }
             }
         } else {
             /*For the User Cart case.*/
             for (Item item : items) {
-                output(item.displayItem());
+                data[counter] = item.displayItem().split(",");
+                counter++;
             }
         }
+        printTable(getProperStringArray(data));
     }
 
     /**
@@ -358,5 +365,55 @@ public class CommandLineApp {
         } else if(cmd.equalsIgnoreCase("rem")){
             app.getCurrentUser().removeFromCart(item,quantity);
         }
+    }
+
+    /**
+     * Print table of data.
+     * http://stackoverflow.com/questions/275338/java-print-a-2d-string-array-as-a-right-justified-table
+     * @param table data to be in table.
+     */
+    private static void printTable(String[][] table) {
+        // Find out what the maximum number of columns is in any row
+        int maxColumns = 0;
+        for (int i = 0; i < table.length; i++) {
+            maxColumns = Math.max(table[i].length, maxColumns);
+        }
+
+        // Find the maximum length of a string in each column
+        int[] lengths = new int[maxColumns];
+        for (int i = 0; i < table.length; i++) {
+            for (int j = 0; j < table[i].length; j++) {
+                lengths[j] = Math.max(table[i][j].length(), lengths[j]);
+            }
+        }
+
+        // Generate a format string for each column
+        String[] formats = new String[lengths.length];
+        for (int i = 0; i < lengths.length; i++) {
+            formats[i] = "%1$" + lengths[i] + "s"
+                    + (i + 1 == lengths.length ? "\n" : " ");
+        }
+
+        // Print 'em out
+        for (int i = 0; i < table.length; i++) {
+            for (int j = 0; j < table[i].length; j++) {
+                System.out.printf(formats[j], table[i][j]);
+            }
+        }
+    }
+
+    private static String[][] getProperStringArray(String[][] strArray){
+        ArrayList<String[]> tempList = new ArrayList<>();
+        for(String[] str: strArray){
+            if(str == null){
+                break;
+            }
+            tempList.add(str);
+        }
+        String[][] properStringArray = new String[tempList.size()][];
+        for(int i = 0; i < tempList.size(); i++){
+            properStringArray[i] = tempList.get(i);
+        }
+        return properStringArray;
     }
 }
