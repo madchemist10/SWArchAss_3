@@ -68,6 +68,10 @@ public class UserDatabase {
     public void addCartToDB(Cart cart, String username){
         /*Format of {---{ID},{QUANTITY}---,---{ID},{QUANTITY}---,...}*/
         String[] cartDBEntry = cart.getCartDatabaseEntry();
+        if(cartDBEntry.length == 0){
+            //no items in cart
+            return;
+        }
         /*Format of {'..---{ID},{QUANTITY}---,---{ID},{QUANTITY}---,---...---..]}*/
         String items = Interaction.getCommaSeparatedList(cartDBEntry);
         String[] cartEntry = new String[]{username,items};
