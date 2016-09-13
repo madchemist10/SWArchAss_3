@@ -230,7 +230,11 @@ public class CommandLineApp {
         ArrayList<Cart> previousPurchases = app.getCurrentUser().getPreviousPurchases();
         for(Cart cart: previousPurchases){
             String[] cartArray = cart.toStringArray();
-            String cartStr = "";
+            Integer numOfItems = 0;
+            for(Item item: cart.getItems()){
+                numOfItems+=item.getQuantity();
+            }
+            String cartStr = "TotalPrice: "+cart.getTotalPrice()+"||TotalQuantity:"+numOfItems+"||";
             for(int i = 0; i < cartArray.length; i++){
                 cartStr += cartArray[i];
                 if(i != cartArray.length-1){

@@ -119,13 +119,24 @@ public abstract class AItem implements Item {
     }
 
     /**
+     * Returns an array of elements to display to the user.
+     * @return String[] of this item to display.
+     */
+    private String[] getDisplayItem(){
+        return new String[]{
+                this.getName(),
+                this.getQuantity().toString()
+        };
+    }
+
+    /**
      * Returns a comma separated list of item data
      * {@inheritDoc}
      */
     @Override
     public String displayItem(){
         String display = "";
-        for(String str: getDatabaseEntryFormat()){
+        for(String str: getDisplayItem()){
             display += str + ",";
         }
         return display.substring(0, display.length()-1);
