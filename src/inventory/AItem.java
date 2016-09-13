@@ -130,17 +130,4 @@ public abstract class AItem implements Item {
         }
         return display.substring(0, display.length()-1);
     }
-
-    /**
-     * Helper method to get a list of items in the
-     * @return formatted string separated by commas.
-     */
-    public static String getItemHeadersDBFormat(String[] list){
-        String elements = "";
-        for(String element: list){
-            elements+="'"+element+"',";
-        }
-        /*Remove the last comma as we do not need it.*/
-        return elements.substring(0, elements.length()-1);
-    }
 }

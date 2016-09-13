@@ -132,4 +132,17 @@ public class Cart {
         }
         return cartEntry;
     }
+
+    /**
+     * Convert this cart to a string array of items.
+     * @return String[] of items.
+     */
+    public String[] toStringArray(){
+        ArrayList<Item> items = this.getItems();
+        String[] itemArray = new String[items.size()];
+        for(int i = 0; i < items.size(); i++){
+            itemArray[i] = items.get(i).displayItem();
+        }
+        return itemArray;
+    }
 }

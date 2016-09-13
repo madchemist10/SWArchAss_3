@@ -2,6 +2,7 @@ package gui;
 
 import application.Application;
 import application.Interaction;
+import cart.Cart;
 import constants.AppConstants;
 import constants.GUIConstants;
 import inventory.Item;
@@ -179,7 +180,9 @@ public class CommandLineApp {
      * looking at the cart.
      */
     private static void displayCartDecision(){
+        output("User Cart");
         output("0. Purchase Cart.");
+        output("1. View History.");
         output("Back.");
     }
 
@@ -194,6 +197,8 @@ public class CommandLineApp {
                 confirmPurchase();
                 break;
             case "1":
+                output("Previous Purchases >>");
+                viewHistory();
                 break;
         }
     }
@@ -215,6 +220,24 @@ public class CommandLineApp {
                     /*Cart not purchased, return to cart decisions.*/
                     return;
             }
+        }
+    }
+
+    /**
+     * View the history of the current logged in user.
+     */
+    private static void viewHistory(){
+        ArrayList<Cart> previousPurchases = app.getCurrentUser().getPreviousPurchases();
+        for(Cart cart: previousPurchases){
+            String[] cartArray = cart.toStringArray();
+            String cartStr = "";
+            for(int i = 0; i < cartArray.length; i++){
+                cartStr += cartArray[i];
+                if(i != cartArray.length-1){
+                    cartStr+="||";
+                }
+            }
+            output(cartStr);
         }
     }
 }
