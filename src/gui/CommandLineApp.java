@@ -171,8 +171,6 @@ public class CommandLineApp {
             String id = splitUserInput[0];
             String quantity = splitUserInput[1];
             addItem(id, quantity);
-            output("Item: " + id + " added with quantity: " + quantity);
-            output("New total is: "+app.getCurrentUser().getCart().getTotalPrice());
         } catch(Exception e){
             //do nothing, user inputted incorrect format.
             //let loop ask again.
@@ -358,12 +356,22 @@ public class CommandLineApp {
         ItemDatabase itemDB = new ItemDatabase();
         Integer id = Integer.parseInt(cartUpdate[1]);
         Item item = itemDB.getItem(id);
+        if(item == null){
+            output("Item does not exist.");
+            return;
+        }
         Integer quantity = Integer.parseInt(cartUpdate[2]);
+        if(quantity <= 0 && quantity > item.getQuantity()){
+            output("Invalid quantity given.");
+            return;
+        }
         if(cmd.equalsIgnoreCase("add")){
             app.addItemToCart(item,quantity);
         } else if(cmd.equalsIgnoreCase("rem")){
             app.removeItemToCart(item,quantity);
         }
+        output("Item: " + id + " added with quantity: " + quantity);
+        output("New total is: "+app.getCurrentUser().getCart().getTotalPrice());
     }
 
     /**
