@@ -28,17 +28,20 @@ public class UserDatabase {
         String statement = DBStatementBuilder.updateStatement(AppConstants.USER_TABLE);
         String setStatement = "";
         for(int i = 0; i < AppConstants.USER_HEADERS.length; i++){
+            boolean itemAdded = false;
             switch(AppConstants.USER_HEADERS[i]){
                 case AppConstants.USERNAME:
                     break;
                 case AppConstants.SHIPPING_ADDRESS:
                     setStatement+=AppConstants.SHIPPING_ADDRESS+"="+Interaction.escapeString(user.getShippingAddress());
+                    itemAdded = true;
                     break;
                 case AppConstants.CREDIT_CARD:
                     setStatement+=AppConstants.CREDIT_CARD+"="+Interaction.escapeString(user.getCreditCard());
+                    itemAdded = true;
                     break;
             }
-            if(i != AppConstants.USER_HEADERS.length-1) {
+            if(itemAdded && i != AppConstants.USER_HEADERS.length-1) {
                 setStatement += ",";
             }
             /*If more parameters of an user are to be updated, need to add commas after
