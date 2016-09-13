@@ -39,7 +39,7 @@ public class ItemDatabase {
      */
     public Item getItem(Integer id){
         String ID = id.toString();
-        String where = AppConstants.ID + " = '" + ID + "'";
+        String where = AppConstants.ID + " = " + Interaction.escapeString(ID);
         /*Select * from ITEM Where ID = '{ID}'*/
         String statement = DBStatementBuilder.selectStatement("*") +
                 DBStatementBuilder.fromStatement(AppConstants.ITEM_TABLE) +
@@ -99,8 +99,8 @@ public class ItemDatabase {
                 case AppConstants.QUANTITY:
                     int currentQuantityOrdered = Integer.parseInt(itemDatabaseEntry[i]);
                     Item databaseItem = getItem(item.getId());
-                    int newItemQuantity = databaseItem.getQuantity()-currentQuantityOrdered;
-                    setStatement+=AppConstants.QUANTITY+"='"+newItemQuantity+"'";
+                    Integer newItemQuantity = databaseItem.getQuantity()-currentQuantityOrdered;
+                    setStatement+=AppConstants.QUANTITY+"="+Interaction.escapeString(newItemQuantity.toString());
                     break;
                 case AppConstants.PRICE:
                     break;
@@ -111,7 +111,7 @@ public class ItemDatabase {
             * each parameter to update.*/
         }
         statement += DBStatementBuilder.setStatement(setStatement);
-        statement += DBStatementBuilder.whereStatement(AppConstants.ID+"='"+item.getId()+"'");
+        statement += DBStatementBuilder.whereStatement(AppConstants.ID+"="+Interaction.escapeString(item.getId().toString()));
         DatabaseConn itemDBConn = new DatabaseConn(AppConstants.ITEM_DATABASE);
         itemDBConn.updateTableEntry(statement);
     }

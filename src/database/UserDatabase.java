@@ -24,7 +24,27 @@ public class UserDatabase {
     }
 
     public void updateUser(User user){
-
+        /*Update User Set [Column = Data],... Where USERNAME = {username}*/
+        String statement = DBStatementBuilder.updateStatement(AppConstants.USER_TABLE);
+        String setStatement = "";
+        for(int i = 0; i < AppConstants.USER_HEADERS.length; i++){
+            switch(AppConstants.USER_HEADERS[i]){
+                case AppConstants.USERNAME:
+                    break;
+                case AppConstants.SHIPPING_ADDRESS:
+                    setStatement+=AppConstants.SHIPPING_ADDRESS+"="+Interaction.escapeString(user.getShippingAddress());
+                    break;
+                case AppConstants.CREDIT_CARD:
+                    setStatement+=AppConstants.CREDIT_CARD+"="+Interaction.escapeString(user.getCreditCard());
+                    break;
+            }
+            /*If more parameters of an user are to be updated, need to add commas after
+            * each parameter to update.*/
+        }
+        statement += DBStatementBuilder.setStatement(setStatement);
+        statement += DBStatementBuilder.whereStatement(AppConstants.USERNAME+"="+Interaction.escapeString(user.getUsername()));
+        DatabaseConn userDBConn = new DatabaseConn(AppConstants.USER_DATABASE);
+        userDBConn.updateTableEntry(statement);
     }
 
     public ArrayList<String[]> getAllUsers(){
@@ -55,7 +75,7 @@ public class UserDatabase {
 
 
     public User getUser(String username){
-        String where = AppConstants.USERNAME + " = '" + username + "'";
+        String where = AppConstants.USERNAME + " = " + Interaction.escapeString(username);
         /*Select * from USER Where USERNAME = '{username}'*/
         String statement = DBStatementBuilder.selectStatement("*") +
                 DBStatementBuilder.fromStatement(AppConstants.USER_TABLE) +
@@ -90,7 +110,7 @@ public class UserDatabase {
      * @return List of carts associated with the given user.
      */
     private static ArrayList<Cart> getUserPreviousPurchases(String username){
-        String where = AppConstants.USERNAME + " = '" + username + "'";
+        String where = AppConstants.USERNAME + " = " + Interaction.escapeString(username);
         /*Select * from USER_PURCHASE Where USERNAME = '{username}'*/
         String statement = DBStatementBuilder.selectStatement("*") +
                 DBStatementBuilder.fromStatement(AppConstants.USER_PURCHASE_TABLE) +

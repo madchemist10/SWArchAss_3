@@ -84,7 +84,7 @@ public class Interaction {
     public static String getDBFormat(String[] list){
         String elements = "";
         for(String element: list){
-            elements+="'"+element+"',";
+            elements+=escapeString(element)+",";
         }
         /*Remove the last comma as we do not need it.*/
         return elements.substring(0, elements.length()-1);
@@ -102,5 +102,14 @@ public class Interaction {
         }
         /*Remove the last comma as we do not need it.*/
         return elements.substring(0, elements.length()-1);
+    }
+
+    /**
+     * Generate an escape string from a given string.
+     * @param str string that needs to be escaped.
+     * @return escaped string.
+     */
+    public static String escapeString(String str){
+        return "'"+str+"'";
     }
 }
