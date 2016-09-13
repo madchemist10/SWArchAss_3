@@ -9,6 +9,9 @@ import user.User;
 import java.util.ArrayList;
 
 /**
+ * Handles the interaction between the application and database
+ * userDatabase and itemDatabase objects used to populate cart
+ * and userList arrays.
  */
 public class Interaction {
 
