@@ -276,7 +276,6 @@ public class CommandLineApp {
                 viewHistory();
                 break;
             case "1":
-                output("Are you sure you want to purchase your cart? >>");
                 confirmPurchase();
                 break;
             case "2":
@@ -291,6 +290,7 @@ public class CommandLineApp {
      */
     private static void confirmPurchase(){
         while(true){
+            output("Are you sure you want to purchase your cart? >>");
             String userInput = userInput();
             switch(userInput){
                 case "Y":
