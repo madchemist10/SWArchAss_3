@@ -6,7 +6,6 @@ import cart.Cart;
 import constants.AppConstants;
 import constants.GUIConstants;
 import database.ItemDatabase;
-import dnl.utils.text.table.TextTable;
 import inventory.Item;
 
 import java.util.ArrayList;
