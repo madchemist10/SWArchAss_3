@@ -295,8 +295,10 @@ public class CommandLineApp {
             switch(userInput){
                 case "Y":
                 case "y":
-                    /*Purchase the cart if the user confirmed.*/
-                    app.confirmPurchase();
+                    /*Purchase the cart if the user confirmed. and the cart is not empty.*/
+                    if(app.getCurrentUser().getCart().getItems().size() != 0) {
+                        app.confirmPurchase();
+                    }
                     return;
                 case "N":
                 case "n":
