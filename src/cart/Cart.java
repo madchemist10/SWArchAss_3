@@ -173,4 +173,19 @@ public class Cart {
         }
         return itemArray;
     }
+
+    /**
+     * Check if an item is already in the cart.
+     * @param id of the item to be checked.
+     * @return true if item is in cart,
+     *          false if item is not in cart.
+     */
+    public boolean itemExistsInCart(Integer id){
+        for(Item item: getItems()){
+            if(item.getId().equals(id)){
+                return true;
+            }
+        }
+        return false;
+    }
 }

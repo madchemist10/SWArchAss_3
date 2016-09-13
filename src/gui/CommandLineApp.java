@@ -361,16 +361,22 @@ public class CommandLineApp {
             return;
         }
         Integer quantity = Integer.parseInt(cartUpdate[2]);
-        if(quantity <= 0 && quantity > item.getQuantity()){
+        if(quantity <= 0 || quantity > item.getQuantity()){
             output("Invalid quantity given.");
             return;
         }
         if(cmd.equalsIgnoreCase("add")){
             app.addItemToCart(item,quantity);
+            output("Item: " + id + " added with quantity: " + quantity);
         } else if(cmd.equalsIgnoreCase("rem")){
-            app.removeItemToCart(item,quantity);
+            if(app.getCurrentUser().getCart().itemExistsInCart(id)) {
+                app.removeItemToCart(item, quantity);
+                output("Item: " + id + " removed with quantity: " + quantity);
+            } else{
+                output("Item requested to remove is not in cart.");
+                return;
+            }
         }
-        output("Item: " + id + " added with quantity: " + quantity);
         output("New total is: "+app.getCurrentUser().getCart().getTotalPrice());
     }
 
