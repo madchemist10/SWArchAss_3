@@ -36,21 +36,30 @@ public class Cart {
      * in this cart. Update the quantity and running
      * total for every item that is added, even if
      * it is the same item.
+     * Assumed that the new quantity given is larger than previous.
      * @param item item to add to this cart.
      * @param quantity quantity of this item to add.
      */
     public void addItem(Item item, Integer quantity){
+
         /*Update the quantity of an item.*/
         item.setQuantity(quantity);
 
-        /*Update the running total of this cart.*/
-        updateTotal(item.getPrice());
-
-        /*If the item is already in the list,
-        * early return from method.*/
-        if(items.contains(item)){
-            return;
+        /*If the item is in the list, update the quantity.*/
+        for(Item thisItem: getItems()){
+            if(thisItem.getId().equals(item.getId())){
+                Integer deltaQuantity = quantity - thisItem.getQuantity();
+                updateTotal(deltaQuantity*thisItem.getPrice());
+                thisItem.setQuantity(quantity);
+                return;
+            }
         }
+
+        /*Update the running total of this cart.
+        * If the item is new, then updated full total.*/
+        updateTotal(quantity * item.getPrice());
+
+        /*Add item if not found in the list.*/
         items.add(item);
     }
 
@@ -58,17 +67,34 @@ public class Cart {
      * Remove an item from the list if the new
      * quantity is 0. Otherwise, just update the
      * quantity.
+     * Assumed that the new quantity given is less than previous.
+     * Assumed that the item is in the cart already.
+     *      (the id of the item must match)
      * @param item item to remove from this cart.
      * @param quantity quantity of this item to remove.
      */
     public void removeItem(Item item, Integer quantity){
+
         /*Update the quantity of an item.*/
         item.setQuantity(quantity);
 
-        /*If the quantity of the item after update is
-        * equal to 0, remove it from this carts list.*/
-        if(item.getQuantity() == 0){
-            items.remove(item);
+        /*If the item is in the list, update the quantity.*/
+        for(Item thisItem: getItems()){
+            if(thisItem.getId().equals(item.getId())){
+                Integer deltaQuantity = thisItem.getQuantity() - quantity;
+                if(deltaQuantity > 0) {
+                    updateTotal(-(deltaQuantity * thisItem.getPrice()));
+                    thisItem.setQuantity(quantity);
+                }
+                /*If the quantity of the item after update is
+                * equal to 0, remove it from this cart's list.*/
+                if(item.getQuantity() == 0){
+                    //remove all price values for removed item.
+                    updateTotal(-(thisItem.getQuantity() * thisItem.getPrice()));
+                    items.remove(thisItem);
+                }
+                return;
+            }
         }
     }
 

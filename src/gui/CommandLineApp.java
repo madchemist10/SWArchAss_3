@@ -5,6 +5,7 @@ import application.Interaction;
 import cart.Cart;
 import constants.AppConstants;
 import constants.GUIConstants;
+import database.ItemDatabase;
 import inventory.Item;
 
 import java.util.ArrayList;
@@ -59,6 +60,10 @@ public class CommandLineApp {
         System.out.println(str);
     }
 
+    /**
+     * Retrieve user input for a given task.
+     * @return String representation of the user's input.
+     */
     private static String userInput(){
         Scanner input = new Scanner(System.in);
         return input.nextLine();
@@ -181,8 +186,9 @@ public class CommandLineApp {
      */
     private static void displayCartDecision(){
         output("User Cart");
-        output("0. Purchase Cart.");
-        output("1. View History.");
+        output("0. View History.");
+        output("1. Purchase Cart.");
+        output("2. Update Cart.");
         output("Back.");
     }
 
@@ -193,12 +199,16 @@ public class CommandLineApp {
     private static void handleCartDecision(String index){
         switch(index){
             case "0":
+                output("Previous Purchases >>");
+                viewHistory();
+                break;
+            case "1":
                 output("Are you sure you want to purchase your cart? >>");
                 confirmPurchase();
                 break;
-            case "1":
-                output("Previous Purchases >>");
-                viewHistory();
+            case "2":
+                output("Update Cart >>");
+                updateCart();
                 break;
         }
     }
@@ -234,14 +244,36 @@ public class CommandLineApp {
             for(Item item: cart.getItems()){
                 numOfItems+=item.getQuantity();
             }
-            String cartStr = "TotalPrice: "+cart.getTotalPrice()+"||TotalQuantity:"+numOfItems+"||";
-            for(int i = 0; i < cartArray.length; i++){
-                cartStr += cartArray[i];
-                if(i != cartArray.length-1){
-                    cartStr+="||";
-                }
+            String cartStr = "TotalPrice: "+cart.getTotalPrice()+" || TotalQuantity:"+numOfItems+" || ";
+            for(String aCartArray : cartArray) {
+                cartStr += aCartArray + " || ";
             }
             output(cartStr);
+        }
+    }
+
+    private static void updateCart(){
+        output("Update item in form of [{'add' or 'rem'},{id},{quantity}");
+        output("Example: 'add,0,2'");
+        try {
+            handleCartUpdate(userInput());
+        }catch(Exception e){
+            output("Incorrect format for update. [{id},{quantity}]");
+            //do nothing, use gave incorrect format.
+        }
+    }
+
+    private static void handleCartUpdate(String update) throws Exception{
+        String[] cartUpdate = update.split(",");
+        String cmd = cartUpdate[0];
+        ItemDatabase itemDB = new ItemDatabase();
+        Integer id = Integer.parseInt(cartUpdate[1]);
+        Item item = itemDB.getItem(id);
+        Integer quantity = Integer.parseInt(cartUpdate[2]);
+        if(cmd.equalsIgnoreCase("add")){
+            app.getCurrentUser().addToCart(item,quantity);
+        } else if(cmd.equalsIgnoreCase("rem")){
+            app.getCurrentUser().removeFromCart(item,quantity);
         }
     }
 }

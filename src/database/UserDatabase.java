@@ -127,16 +127,6 @@ public class UserDatabase {
     }
 
     /**
-     * Helper method to parse a cart's entry from the sql
-     * return query.
-     * @param itemEntry Comma separated item entry.
-     * @return String[] of an item in a cart.
-     */
-    private static String[] parseItemEntry(String itemEntry){
-        return itemEntry.split(",");
-    }
-
-    /**
      * Receive a formatted item in the form of:
      * ---{ID},{QUANTITY}---
      * @param item string representation of database item.
@@ -157,7 +147,7 @@ public class UserDatabase {
         String[] items = cart.split("---,---");
         String[][] parsedCart = new String[items.length][2];
         for(int i = 0; i < items.length; i++){
-            parsedCart[i] = parseItem(items[0]);
+            parsedCart[i] = parseItem(items[i]);
         }
         return parsedCart;
     }
