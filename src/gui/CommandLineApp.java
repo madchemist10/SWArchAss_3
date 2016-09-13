@@ -53,6 +53,13 @@ public class CommandLineApp {
     }
 
     /**
+     * Used at beginning of new menu to separate from previous menu.
+     */
+    private static void menuSeparator(){
+        output("---------------------------------");
+    }
+
+    /**
      * Output a line of text to the user followed by newline char.
      * @param str string to display to the user.
      */
@@ -70,6 +77,7 @@ public class CommandLineApp {
     }
 
     private static void displayMainMenu(){
+        menuSeparator();
         output("Welcome to your online shopping site.");
         output("0. Search items.");
         output(String.format("1. Display %s's cart.",app.getUsername()));
@@ -85,6 +93,12 @@ public class CommandLineApp {
             /*Display all items in database.*/
             case "0":
                 displayItems(app.displayAvailableItems(), true);
+                /*Shop until user types back.*/
+                while(true){
+                    if (!(shop())){
+                        break;
+                    }
+                }
                 break;
             /*Display user's cart.*/
             case "1":
@@ -134,10 +148,53 @@ public class CommandLineApp {
     }
 
     /**
+     * All the use to shop, which is adding items to cart.
+     * @return true if continue shopping,
+     *          false if stop shopping.
+     */
+    private static boolean shop(){
+        menuSeparator();
+        output("To add item to cart, enter '{id},{quantity}'");
+        output("Back to return to previous menu.");
+        String userInput = userInput();
+        if(userInput.equalsIgnoreCase("back")){
+            return false;
+        }
+        try {
+            String[] splitUserInput = userInput.split(",");
+            String id = splitUserInput[0];
+            String quantity = splitUserInput[1];
+            addItem(id, quantity);
+            output("Item: " + id + " added with quantity: " + quantity);
+            output("New total is: "+app.getCurrentUser().getCart().getTotalPrice());
+        } catch(Exception e){
+            //do nothing, user inputted incorrect format.
+            //let loop ask again.
+        }
+        return true;
+    }
+
+    /**
+     * Helper method for shopping to add item to user's cart.
+     * @param id id of item to add to user's cart.
+     * @param quantity quantity of the item to add to the user's cart.
+     */
+    private static void addItem(String id, String quantity){
+        /*'add,{id},{quantity}'*/
+        String formattedUpdate = "add,"+id+","+quantity;
+        try {
+            handleCartUpdate(formattedUpdate);
+        }catch(Exception e){
+            //do nothing, should never be reached.
+        }
+    }
+
+    /**
      * Menu for giving the user options for categories of
      * items to view.
      */
     private static void displayCategoryDecision(){
+        menuSeparator();
         output("Choose your category:");
         output("0. Books");
         output("1. Children Toys");
@@ -166,9 +223,20 @@ public class CommandLineApp {
         return index;
     }
 
-    private static void displayCart(){
+    /**
+     * Display the user's cart to the user.
+     */
+    private static void displayUserCart(){
         output(""+app.getUsername()+"'s Cart.");
         displayItems(app.getCurrentUser().getCart().getItems(), false);
+    }
+
+    /**
+     * Get user input for the displayed cart and act on
+     * the input.
+     */
+    private static void displayCart(){
+        displayUserCart();
         while(true) {
             displayCartDecision();
                 /*Get user choice*/
@@ -185,6 +253,7 @@ public class CommandLineApp {
      * looking at the cart.
      */
     private static void displayCartDecision(){
+        menuSeparator();
         output("User Cart");
         output("0. View History.");
         output("1. Purchase Cart.");
@@ -258,6 +327,8 @@ public class CommandLineApp {
      * to input data.
      */
     private static void updateCart(){
+        menuSeparator();
+        displayUserCart();
         output("Update item in form of [{'add' or 'rem'},{id},{quantity}");
         output("Example: 'add,0,2'");
         try {
