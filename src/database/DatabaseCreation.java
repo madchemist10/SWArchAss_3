@@ -5,6 +5,8 @@ import constants.AppConstants;
 import inventory.*;
 import user.User;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 /**
@@ -13,7 +15,12 @@ import java.util.ArrayList;
  */
 public class DatabaseCreation {
 
+    /**
+     * Generate a new database for both items and user data.
+     * @param args not used.
+     */
     public static void main(String[] args) {
+        removeOldDatabaseFiles();
         //establish connection
         DatabaseConn itemDataConn = new DatabaseConn(AppConstants.ITEM_DATABASE);
         DatabaseConn userDataConn = new DatabaseConn(AppConstants.USER_DATABASE);
@@ -106,7 +113,10 @@ public class DatabaseCreation {
         return itemList;
     }
     
-    //generate a list of users and their carts from the Database
+    /**
+     * Generate a list of users and their carts from the Database
+     * @return List of users.
+     */
     private static ArrayList<User> generateUserList(){
         UserDatabase userDB = new UserDatabase();
         ArrayList<User> userList = new ArrayList<>();
@@ -124,7 +134,10 @@ public class DatabaseCreation {
         return userList;
     }
     
-    //generates cart objects to add to a cartList for use by userList
+    /**
+     * Generates cart objects to add to a cartList for use by userList
+     * @return List of Carts.
+     */
     private static ArrayList<Cart> generateCartList(){
         ItemDatabase itemDB = new ItemDatabase();
         ArrayList<Cart> cartList = new ArrayList<>();
@@ -138,5 +151,18 @@ public class DatabaseCreation {
             counter++;
         }
         return cartList;
+    }
+
+    /**
+     * Remove old database files for new ones to be created.
+     * This keeps old files from being generated with duplicate data.
+     */
+    private static void removeOldDatabaseFiles(){
+        try {
+            Files.delete(Paths.get(AppConstants.ITEM_DATABASE));
+            Files.delete(Paths.get(AppConstants.USER_DATABASE));
+        }catch(Exception e){
+            //do nothing.
+        }
     }
 }
