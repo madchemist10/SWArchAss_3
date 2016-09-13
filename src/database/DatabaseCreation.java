@@ -65,6 +65,12 @@ public class DatabaseCreation {
         }
     }
 
+    /** Generates items in database
+     * IDs of 0-4 (inclusive) are books
+     * IDs of 5-9 (inclusive) are toys
+     * IDs of 10-14 (inclusive) are household items
+     * IDs of 15-19 (inclusive) are small electronics
+    * */
     private static ArrayList<Item> generateItemList(){
         ArrayList<Item> itemList = new ArrayList<>();
         int id = 0;
@@ -99,7 +105,8 @@ public class DatabaseCreation {
         }
         return itemList;
     }
-
+    
+    //generate a list of users and their carts from the Database
     private static ArrayList<User> generateUserList(){
         UserDatabase userDB = new UserDatabase();
         ArrayList<User> userList = new ArrayList<>();
@@ -116,7 +123,8 @@ public class DatabaseCreation {
         }
         return userList;
     }
-
+    
+    //generates cart objects to add to a cartList for use by userList
     private static ArrayList<Cart> generateCartList(){
         ItemDatabase itemDB = new ItemDatabase();
         ArrayList<Cart> cartList = new ArrayList<>();
