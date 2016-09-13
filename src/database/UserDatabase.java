@@ -38,6 +38,9 @@ public class UserDatabase {
                     setStatement+=AppConstants.CREDIT_CARD+"="+Interaction.escapeString(user.getCreditCard());
                     break;
             }
+            if(i != AppConstants.USER_HEADERS.length-1) {
+                setStatement += ",";
+            }
             /*If more parameters of an user are to be updated, need to add commas after
             * each parameter to update.*/
         }

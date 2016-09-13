@@ -374,15 +374,15 @@ public class CommandLineApp {
     private static void printTable(String[][] table) {
         // Find out what the maximum number of columns is in any row
         int maxColumns = 0;
-        for (int i = 0; i < table.length; i++) {
-            maxColumns = Math.max(table[i].length, maxColumns);
+        for (String[] aTable : table) {
+            maxColumns = Math.max(aTable.length, maxColumns);
         }
 
         // Find the maximum length of a string in each column
         int[] lengths = new int[maxColumns];
-        for (int i = 0; i < table.length; i++) {
-            for (int j = 0; j < table[i].length; j++) {
-                lengths[j] = Math.max(table[i][j].length(), lengths[j]);
+        for (String[] aTable : table) {
+            for (int j = 0; j < aTable.length; j++) {
+                lengths[j] = Math.max(aTable[j].length(), lengths[j]);
             }
         }
 
@@ -394,9 +394,9 @@ public class CommandLineApp {
         }
 
         // Print 'em out
-        for (int i = 0; i < table.length; i++) {
-            for (int j = 0; j < table[i].length; j++) {
-                System.out.printf(formats[j], table[i][j]);
+        for (String[] aTable : table) {
+            for (int j = 0; j < aTable.length; j++) {
+                System.out.printf(formats[j], aTable[j]);
             }
         }
     }
