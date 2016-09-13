@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 /**
  * Representation of a user's cart.
+ * Maintains a list of items as well as total value
+ * of the cart.
  */
 public class Cart {
 
