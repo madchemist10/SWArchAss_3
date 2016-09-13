@@ -302,6 +302,8 @@ public class CommandLineApp {
                 case "n":
                     /*Cart not purchased, return to cart decisions.*/
                     return;
+                default:
+                    break;
             }
         }
     }
