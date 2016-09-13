@@ -23,6 +23,10 @@ public class UserDatabase {
         userDBConn.insertIntoTable(statement);
     }
 
+    public void updateUser(User user){
+
+    }
+
     public ArrayList<String[]> getAllUsers(){
         /*Select * from User*/
         String statement = DBStatementBuilder.selectStatement(AppConstants.USERNAME) +

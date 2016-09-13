@@ -76,10 +76,13 @@ public class Application {
 
     /**
      * The user's purchase has been confirmed.
+     * Update the database with any changed data associated with
+     * the user's object representation.
      * Update the database with the newly purchased items.
      * Alert the current user object that the cart has been purchased.
      */
     public void confirmPurchase(){
+        dataInteraction.updateUserList(getCurrentUser());
         dataInteraction.updateItemList(currentUser.getCart());
         currentUser.purchaseCart();
     }
