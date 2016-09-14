@@ -7,12 +7,23 @@ import user.User;
 import java.util.ArrayList;
 
 /**
+ * This class is responsible for retrieving users
+ * from the user database as well as persisting any
+ * data associated with users.
  */
 public class UserDatabase {
+
+    /**
+     * Constructor used only for instantiation.
+     */
     public UserDatabase(){
         //do nothing
     }
 
+    /**
+     * Add a user to the database.
+     * @param user the user to add.
+     */
     void addUser(User user){
         String[] userEntry = user.getDatabaseEntryFormat();
         String values = Interaction.getDBFormat(userEntry);
@@ -23,6 +34,11 @@ public class UserDatabase {
         userDBConn.insertIntoTable(statement);
     }
 
+    /**
+     * Update a user's attributes [Shipping Address, CreditCard].
+     * Update is based on the username of the user.
+     * @param user user to update in the database.
+     */
     public void updateUser(User user){
         /*Update User Set [Column = Data],... Where USERNAME = {username}*/
         String statement = DBStatementBuilder.updateStatement(AppConstants.USER_TABLE);
@@ -53,6 +69,12 @@ public class UserDatabase {
         userDBConn.updateTableEntry(statement);
     }
 
+    /**
+     * Retrieve a list of all users.
+     * Used for making sure that the username of
+     * the user trying to login is in the database (valid user)
+     * @return list of string arrays (each with username as only element)
+     */
     public ArrayList<String[]> getAllUsers(){
         /*Select * from User*/
         String statement = DBStatementBuilder.selectStatement(AppConstants.USERNAME) +
@@ -65,6 +87,14 @@ public class UserDatabase {
         return returnVal;
     }
 
+    /**
+     * Add a given cart to the database for a given username.
+     * @param cart cart to add to the database, cart has been
+     *             purchased at this point.
+     * @param username user's username in the database,
+     *                 key to retrieve this as a previous purchase
+     *                 later on new login.
+     */
     public void addCartToDB(Cart cart, String username){
         /*Format of {---{ID},{QUANTITY}---,---{ID},{QUANTITY}---,...}*/
         String[] cartDBEntry = cart.getCartDatabaseEntry();
@@ -83,7 +113,11 @@ public class UserDatabase {
         userDBConn.insertIntoTable(statement);
     }
 
-
+    /**
+     * Retrieve a user by their username.
+     * @param username user's username in the database.
+     * @return User object from the user's persisted data.
+     */
     public User getUser(String username){
         String where = AppConstants.USERNAME + " = " + Interaction.escapeString(username);
         /*Select * from USER Where USERNAME = '{username}'*/
