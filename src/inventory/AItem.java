@@ -4,7 +4,7 @@ package inventory;
  * Abstract representation of AItem that is extended by any
  * specific implementation of items.
  */
-public abstract class AItem implements Item {
+abstract class AItem implements Item {
     /** Current price of this item.*/
     private Double price;
     /** Current quantity of this item either in
