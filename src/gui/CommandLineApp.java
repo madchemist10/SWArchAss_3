@@ -15,8 +15,17 @@ import java.util.Scanner;
  * This is the user interaction with the system through a command line application.
  */
 public class CommandLineApp {
+    /**Static reference to the application that maintains
+     * all states of users and items. Has commands for accessing
+     * the state of the user and/or items.*/
     private static Application app;
 
+    /**
+     * Main execution of the command line application.
+     * Allows for user to give username as commandline argument.
+     * @param args first element must be username, will try to login
+     *             with this string, will fail otherwise.
+     */
     public static void main(String[] args) {
         app = new Application();
         Interaction interaction = new Interaction();
@@ -76,6 +85,10 @@ public class CommandLineApp {
         return input.nextLine();
     }
 
+    /**
+     * Display of the main menu for giving the user the ability to
+     * navigate through searching for items and for viewing user account.
+     */
     private static void displayMainMenu(){
         menuSeparator();
         output("Welcome to your online shopping site.");
@@ -427,6 +440,14 @@ public class CommandLineApp {
         }
     }
 
+    /**
+     * Get a string array confined to the number of elements
+     * in the original str array, does not allow null string[].
+     * Used with the print table method, for presenting
+     * data to the user.
+     * @param strArray given string array.
+     * @return string array that has no null arrays.
+     */
     private static String[][] getProperStringArray(String[][] strArray){
         ArrayList<String[]> tempList = new ArrayList<>();
         for(String[] str: strArray){
@@ -442,18 +463,36 @@ public class CommandLineApp {
         return properStringArray;
     }
 
+    /**
+     * Ask the user for their credit card and shipping address
+     * until both are valid inputs.
+     * Credit Card length must be 10 characters. Will be stored as
+     * string, no parsing done.
+     * If "back" is given, then the loop for that attribute will
+     * exit and no data will be saved.
+     */
     private static void askUserForPurchaseInformation(){
+        /*Ask user for shipping address.*/
         while(true) {
             output(GUIConstants.ASK_FOR_SHIPPING_ADDRESS);
             String shippingAddress = userInput();
+            if(shippingAddress.equalsIgnoreCase("back")){
+                break;
+            }
+            //cannot set empty strings.
             if(!shippingAddress.equals("")) {
                 app.getCurrentUser().setShippingAddress(shippingAddress);
                 break;
             }
         }
+        /*Ask user for credit card*/
         while(true) {
             output(GUIConstants.ASK_FOR_CREDIT_CARD);
             String creditCard = userInput();
+            if(creditCard.equalsIgnoreCase("back")){
+                break;
+            }
+            /*Must be length of 10*/
             if (creditCard.length() == 10) {
                 app.getCurrentUser().setCreditCard(creditCard);
                 break;
